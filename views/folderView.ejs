@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../public/styles/file.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <title>Home</title>
+</head>
+
+<body>
+
+    <div style="position: relative;top: 50%;">
+        <div class="topnav" id="myTopnav">
+            <div class="container">
+
+                <div id="alignment">
+                    <a href="/" class="home-tag" id="home">Home</a>
+
+                    <a href="/logout">Logout</a>
+
+                </div>
+                <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+                    <i style="font-size: 30px;display: none;" class="fa fa-times" aria-hidden="true"></i>
+                    <i style="font-size: 30px;" class="fa fa-bars" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+<% if(folder != "undefined"){ %>
+    <div class="container">
+
+        <!-- Button trigger modal -->
+        <div style="display: flex;">
+            <div>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
+                    style="margin-top: 10px;">
+                    + upload file
+                </button>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" style="margin-top: 10px;margin-left: 10px;" id="filesearch"
+                    placeholder="search file">
+            </div>
+        </div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Upload file</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/folder/uploadfile" method="post" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <input type="file" class="form-control" name="name">
+                                <input type="hidden" class="form-control" name="folderid" value="<%= folder._id %>">
+                            </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">cancel</button>
+                        <input type="submit" class="btn btn-primary" value="upload">
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+  
+            <div style="display: flex;opacity: 0.5;">
+                <p><a href="/" style="color: black;">Home</a></p>
+                <p>&nbsp;&nbsp;>&nbsp;&nbsp;</p>
+                <% if(folderStructure.length > 0){ %>
+                    <% for(let i=folderStructure.length-1;i>=0;i--){ %>
+                        <p> <a href="/folder/<%= folderStructure[i]._id %>" style="color: black;"><%= folderStructure[i].name %></a> </p>
+                        <p>&nbsp;&nbsp;>&nbsp;&nbsp;</p>
+                    <% } %>
+                <% } %>
+               <p id="mainfolderName"><%= folder.name %></p>
+            </div>
+
+        <div id="folderSection">
+                    <!--  -->
+                    <% if(movedFolders != "undefined" && movedFolders.length > 0){ %>
+                    <div>
+                        <p>Folders</p>
+                        <hr>
+                    </div>
+                    
+                    <div class="row">
+                        <% movedFolders.forEach((folder) => { %>
+                        <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3">
+                            <div class="folder-data">
+                    
+                                <div class="folder-image">
+                                    <i class="fa fa-folder" aria-hidden="true"></i>
+                                </div>
+                                <div>
+                                    <p class="folder-name" id="folderNames"><a href="/folder/<%= folder._id %>">
+                                            <%= folder.name %></a></p>
+                                </div>
+                    
+                    
+                                <div class="folder-details" id="folderDetails">
+                                    <i class="fa fa-ellipsis-v one" aria-hidden="true"></i>
+                                </div>
+                                <div class="folder-extra-details">
+                                    <i class="fa fa-times-circle circleOne"></i>
+                                    <div class="popup">
+                                        <p><a href="/folder/<%= folder._id %>">open</a></p>
+                                        <p id="moveFolderclick" style="cursor: pointer;">Move</p>
+                                        <p data-toggle="modal" data-target="#folder<%= folder._id %>" style="cursor: pointer;">Edit</p>
+                                        <p><a href="/deleteFolder/<%= folder._id %>">Delete</a></p>
+                                    </div>
+                                </div>
+                    
+                    
+                                <div id="move_folder" class="closeFolderAction">
+                                    <i class="fa fa-times-circle circleTwo"></i>
+                                    <div style="margin-top: 22px;">
+                                        <p style="font-weight: 500;">select folder name to move</p>
+                                        <hr>
+                                    </div>
+                                    <form action="/moveFolder/<%= folder._id %>" method="POST">
+                                        <p id="warning" style="display: none;color: red;">Can't move to same folder</p>
+                                        <p id="warning1" style="display: none;color: red;">Already in same folder</p>
+                                        <select name="path" class="form-control folderSelection">
+                                            <option value="">select folder</option>
+                                            <option value="home">Home</option>
+                                            <% allfolders.forEach((val) => {%>
+                                            <option value="<%= val.name %>"><%= val.name %></option>
+                                            <% })%>
+                                        </select>
+                                        
+                                        <div style="margin-top: 10px;">
+                                            <input type="submit" value="move">
+                                        </div>
+                                    </form>
+                                </div>
+                    
+                            </div>
+                        </div>
+
+                        <!-- edit folder Modal -->
+                            <div class="modal fade" id="folder<%= folder._id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                                aria-hidden="true" style="margin-top: 80px;">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Edit folder</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="/editFolder/<%= folder._id %>" method="post">
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" value="<%= folder.name %>" name="name">
+                                                </div>
+                            
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">cancel</button>
+                                            <input type="submit" class="btn btn-primary" value="Edit">
+                                        </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }) %>
+                    </div>
+                    
+                    <% } %>
+        </div>
+
+        <div>
+            <% if(folder.files.length > 0){ %>
+            <div style="margin-top: 20px;">
+                <p>Files</p>
+                <hr>
+            </div>
+            <div class="row" id="fileSection">
+            
+                <% folder.files.forEach((file) => { %>
+                <div class="col-xs-4 col-sm-6 col-md-4 col-lg-3">
+                    <div id="files">
+                        <div>
+                            <i class="fa fa-ellipsis-v fileEllipsis" aria-hidden="true" style="cursor: pointer;"></i>
+                        </div>
+                        <div class="text-center">
+                            <% if(file.name.split(".")[1] === "pdf"){ %>
+                            <img src="../public/images/pdfs.png" alt="" srcset="" width="170" height="230px">
+                            <% }else if(file.name.split(".")[1] === "txt"){ %>
+                            <img src="../public/images/text.png" alt="" srcset="" width="200" height="230px">
+                            <% }else{ %>
+                            <img src="../public/uploads/<%= file.name %>" alt="" srcset="" width="100%" height="250px">
+                            <% } %>
+                        </div>
+                        <div style="text-align: center;">
+                            <a href="/folder/downloadFile/<%= file.name %>" id="filename">
+                                <p><%= file.name %></p>
+                            </a>
+                        </div>
+                        <div class="file-extra-details">
+                            <i class="fa fa-times-circle filecircleOne"></i>
+                            <div class="popup">
+                                <p id="moveFileclick" style="cursor: pointer;">Move</p>
+                                <p>
+                                    <a href="/folder/downloadFile/<%= file.name %>">
+                                        Download
+                                    </a>
+                                </p>
+                                <p><a href="/folder/deleteFile/<%= file._id %>">Delete</a></p>
+                                <p style="display: none;" id="filePath"><%= file.path._id %></p>
+                            </div>
+                        </div>
+
+                        <div id="move_file" class="closeFolderAction">
+                            <i class="fa fa-times-circle filecircleTwo"></i>
+                            <div style="margin-top: 22px;">
+                                <p style="font-weight: 500;">select folder name to move</p>
+                                <hr>
+                            </div>
+                            <form action="/folder/moveFile/<%= file._id %>" method="POST">
+                                <p id="filewarning1" style="display: none;color: red;">Already in same folder</p>
+                                <input type="hidden" name="currentFolder" value="<%= folder._id %>">
+                                <select name="fileToMove" class="form-control fileSelection">
+                                    <option value="">select folder</option>
+                                    <% allfolders.forEach((val) => {%>
+                                    <option value="<%= val._id %>"><%= val.name %></option>
+                                    <% })%>
+                                </select>
+                        
+                                <div style="margin-top: 10px;">
+                                    <input type="submit" value="move">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <% }) %>
+                <% } %>
+            </div>
+            <% } %>
+        </div>
+
+
+    </div>
+    <script src="../public/scripts/file.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+</body>
+
+</html>
