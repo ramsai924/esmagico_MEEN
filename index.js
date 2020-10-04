@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({ extended : false }));
 //routes
 app.use("/" , folder)
 app.use("/folder",file)
-const port = 4000 || process.env.PORT;
+const port = process.env.PORT || 5000;
 app.listen(port,() => {
     console.log(`connected to port : ${port}`)
 })
