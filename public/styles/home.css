@@ -27,6 +27,50 @@ body {
 .topnav .icon {
   display: none;
 }
+#files{
+height: 340px;
+border-radius: 5px;
+padding: 10px;
+margin-top: 10px;
+box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.Home-file-extra-details{
+  display: none;
+  width: 130px;
+  position: absolute;right: 30px;top: 42px;
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  z-index: 1;
+  border-radius: 5px;
+  padding: 10px;
+}
+.fileEllipsis{
+  position: absolute;
+  right: 25px;
+}
+.HomefilecircleOne{
+  position: absolute;
+  right: 15px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.HomefilecircleOne:hover{
+  font-size: 20px;
+}
+.homefilecircleTwo{
+  position: absolute;right: 9px;font-size: 20px;cursor: pointer;
+  transition: 0.2s;
+}
+#move_file{
+    display: none;
+  /* width: 130px; */
+  position: absolute;right: 30px;top: 42px;
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  z-index: 1;
+  border-radius: 5px;
+  padding: 15px;
+}
 
 .folder-data{
     margin-top:10px; display:flex;border-radius: 4px;border: 0.9px solid grey;
@@ -99,7 +143,7 @@ body {
 }
 
 @media screen and (max-width: 600px) {
-  .topnav a:not(:first-child) {display: none;}
+  .topnav a {display: none;}
   .home-tag{
       float: left;
   }

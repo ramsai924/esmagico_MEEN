@@ -5,23 +5,27 @@ const File = require("../models/file")
 const fs = require('fs')
 const app = express();
 
+//Get files on home page
 app.get("/",async (req,res) => {
     try {
         const findFolder = await Folder.find({})
         const folders = findFolder.filter((val) => {
             return val.path == "home"
         })
-        res.render("home", { folders })
+        const files = await File.find({ homepath : "home"})
+        console.log(files)
+        res.render("home", { folders, files })
     } catch (error) {
         console.error(error)
     }
 })
 
+//create folder route
 app.post("/createfolder",async (req,res) => {
     try {
         Folder.create(req.body , (err) => {
             if(err) throw err;
-            res.redirect("/")
+            res.redirect(req.headers.referer)
         });
        
     } catch (error) {
@@ -29,6 +33,7 @@ app.post("/createfolder",async (req,res) => {
     }
 })
 
+//Edit folder
 app.post("/editFolder/:id",async (req,res) => {
     try {
         const allFolders = await Folder.find({})
@@ -41,13 +46,14 @@ app.post("/editFolder/:id",async (req,res) => {
         })
         Folder.findByIdAndUpdate({ _id: req.params.id }, { name: req.body.name }, { new: true, runValidators: true },(err) => {
             if(err) throw err;
-            res.redirect("/")
+            res.redirect(req.headers.referer)
         })
     } catch (error) {
        console.log(error) 
     }
 })
 
+//Delete folder
 app.get("/deleteFolder/:id",async (req,res) => {
     try {
         var paramId = req.params.id;
@@ -65,13 +71,13 @@ app.get("/deleteFolder/:id",async (req,res) => {
         }
         recursiveDeletion(paramId)
         
-        res.redirect("/")
+        res.redirect(req.headers.referer)
     } catch (error) {
         console.log(error)
     }
 })
 
-
+//Move folder to another folder
 app.post("/moveFolder/:id", async (req,res) => {
     try {
        if(req.body.path == ""){
@@ -85,7 +91,7 @@ app.post("/moveFolder/:id", async (req,res) => {
     }
 })
 
-
+//Function to remove files from DB and from app uploads 
 async function removeFiles(arr){
    try {
        arr.forEach((file) => {

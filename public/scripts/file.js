@@ -9,12 +9,19 @@ function myFunction() {
         document.querySelector(".fa-bars").style.display = "none"
     } else {
         x.className = "topnav";
-        document.querySelector(".topnav").style.background = "transparent"
         document.querySelector(".fa-bars").style.display = "block"
         document.querySelector(".fa-times").style.display = "none"
     }
 }
-//search
+//
+$("#optradio1").click(function () {
+    $("#folder").show()
+    $("#file").hide()
+})
+$("#optradio2").click(function () {
+    $("#folder").hide()
+    $("#file").show()
+})
 
 //search bar
 var searchBar = document.getElementById("filesearch")
@@ -38,7 +45,6 @@ $(".circleTwo").click(function () {
 
 //more details event
 document.getElementById("folderSection").addEventListener("click",function(e){
-    // console.log(e.target.parentNode.parentNode.childNodes)
     if (e.target.className === "fa fa-ellipsis-v one"){
         $(e.target.parentNode.parentNode.childNodes[7]).toggle()
     }
@@ -46,7 +52,6 @@ document.getElementById("folderSection").addEventListener("click",function(e){
         $(".folder-extra-details").hide()
     }
     if (e.target.id === "moveFolderclick") {
-        // console.log(e.target.parentNode.parentNode.parentNode.childNodes[9])
         $(e.target.parentNode.parentNode.parentNode.childNodes[9]).show()
     }
 })
@@ -110,7 +115,6 @@ document.getElementById("fileSection").addEventListener('click',function(e){
         $(".closeFolderAction").hide()
     }
     if (e.target.id === "moveFileclick") {
-        // console.log(e.target.parentNode.parentNode.parentNode.childNodes[9])
         $(e.target.parentNode.parentNode.parentNode.childNodes[9]).show()
     }
 })

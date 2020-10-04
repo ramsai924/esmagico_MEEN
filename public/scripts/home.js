@@ -9,7 +9,7 @@ function myFunction() {
         document.querySelector(".fa-bars").style.display = "none"
     } else {
         x.className = "topnav";
-        document.querySelector(".topnav").style.background = "transparent"
+        // document.querySelector(".topnav").style.background = "transparent"
         document.querySelector(".fa-bars").style.display = "block"
         document.querySelector(".fa-times").style.display = "none"
     }
@@ -18,10 +18,11 @@ function myFunction() {
 //search bar
 var searchBar = document.getElementById("search")
 var foldersData = document.querySelectorAll("#folderNames")
-
+var filesData = document.querySelectorAll("#filename")
+var arrayToSearch = Array.from(foldersData).concat(Array.from(filesData))
+// console.log(arrayToSearch)
 searchBar.addEventListener("keyup",function(e){
-    Array.from(foldersData).map((val) => {
-        console.log(val.innerText.indexOf(searchBar.value))
+    arrayToSearch.map((val) => {
         if (val.innerText.match(searchBar.value)){
             val.parentNode.parentNode.parentNode.style.display = "";
         }else{
@@ -69,3 +70,32 @@ for(let i=0;i<folderSelection.length;i++){
 }
 
 
+//file and folder selection
+
+$("#optradio1").click(function(){
+    $("#folder").show()
+    $("#file").hide()
+})
+$("#optradio2").click(function () {
+    $("#folder").hide()
+    $("#file").show()
+})
+
+//home files close circle one
+$(".HomefilecircleOne").click(function () {
+    $(".Home-file-extra-details").hide()
+})
+
+//file section events
+document.getElementById("homeFileSection").addEventListener('click', function (e) {
+    console.log(e.target)
+    if (e.target.className === "fa fa-ellipsis-v fileEllipsis") {
+        $(e.target.parentNode.parentNode.childNodes[7]).toggle()
+    }
+    if (e.target.className === "fa fa-times-circle homefilecircleTwo") {
+        $(".homecloseFileAction").hide()
+    }
+    if (e.target.id === "moveFileclick") {
+        $(e.target.parentNode.parentNode.parentNode.childNodes[9]).show()
+    }
+})

@@ -19,10 +19,8 @@
             <div class="container">
                 
                 <div id="alignment">
+                    <a href="/logout">About</a>
                     <a href="/" class="home-tag" id="home">Home</a>
-                    
-                    <a href="/logout">Logout</a>
-    
                 </div>
                 <a href="javascript:void(0);" class="icon" onclick="myFunction()">
                     <i style="font-size: 30px;display: none;" class="fa fa-times" aria-hidden="true"></i>
@@ -31,7 +29,7 @@
             </div>
         </div>
     </div>
-
+    
     <div class="container">
 
         <!-- Button trigger modal -->
@@ -42,7 +40,7 @@
                 </button>
             </div>
             <div class="form-group">
-                <input type="text" class="form-control" style="margin-top: 10px;margin-left: 10px;" id="search" placeholder="search folder">
+                <input type="text" class="form-control" style="margin-top: 10px;margin-left: 10px;" id="search" placeholder="search">
             </div>
        </div>
         
@@ -53,30 +51,57 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">New folder</h5>
+                        <!-- <h5 class="seletion_tag" style="position: absolute;left: 38%;">select option</h5> -->
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="/createfolder" method="post">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Folder name" name="name">
+                        <div style="display: flex;justify-content: space-around;font-size: large;">
+                            <label class="radio"><input type="radio" id="optradio1" name="optradio">  create folder</label>
+                            <label class="radio"><input type="radio" id="optradio2" name="optradio">  upload file</label>
+                        </div>
+                        <div id="folder" style="display: none;margin-top: 20px;">
+                            <form action="/createfolder" method="post">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Folder name" name="name">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">cancel</button>
+                                    <input type="submit" class="btn btn-primary" value="create">
+                                </div>
+                            </form>
+                        </div>
+                        <div id="file" style="display: none;margin-top: 20px;">
+                                <form action="/folder/uploadfile" method="post" enctype="multipart/form-data">
+                                    <div class="form-group">
+                                        <input type="file" class="form-control" name="name">
+                                        <input type="hidden" name="filePath" value="home">
+                                        <!-- <input type="hidden" class="form-control" name="folderid" value="null"> -->
+                                    </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">cancel</button>
+                                    <input type="submit" class="btn btn-primary" value="upload">
+                                </div>
+                            </form>
                         </div>
                         
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">cancel</button>
-                        <input type="submit" class="btn btn-primary" value="create">
-                    </div>
-                    </form>
+                    
                 </div>
             </div>
-        </div><hr>
-
+        </div>
+        <!-- <input type="hidden" name="filePath" value="folder"> -->
         <!-- Folders section -->
 
         <div>
+            <% if(folders != "undefined" && folders.length > 0){ %>
+                <div style="margin-top: 30px;">
+                    <p>Folders</p>
+                    <hr>
+                </div>
+           <% }%>
+           
             <div class="row" id="folders_section">
                <% if(folders != "undefined" && folders.length > 0){ %>
                    <% folders.forEach((folder) => { %>
@@ -162,6 +187,72 @@
                <% } %>
             </div>
         </div>
+        <!-- files section -->
+        <% if(files != "undefined" && files.length > 0){ %>
+            <div style="margin-top: 40px;">
+                <p>Files</p>
+                <hr>
+            </div>
+            <div class="row" id="homeFileSection">
+           <% files.forEach((file) => { %>
+            
+                <div class="col-xs-4 col-sm-6 col-md-4 col-lg-3">
+                    <div id="files">
+                        <div>
+                            <i class="fa fa-ellipsis-v fileEllipsis" aria-hidden="true" style="cursor: pointer;"></i>
+                        </div>
+                        <div class="text-center" style="margin-top: 10px;">
+                            <% if(file.name.split(".")[1] === "pdf"){ %>
+                            <img src="../public/images/pdfs.png" alt="" srcset="" width="170" height="230px">
+                            <% }else if(file.name.split(".")[1] === "txt"){ %>
+                            <img src="../public/images/text.png" alt="" srcset="" width="200" height="230px">
+                            <% }else{ %>
+                            <img src="../public/uploads/<%= file.name %>" alt="" srcset="" width="100%" height="250px">
+                            <% } %>
+                        </div>
+                        <div style="text-align: center;">
+                            <a href="/folder/downloadFile/<%= file.name %>" id="filename">
+                                <p><%= file.name %></p>
+                            </a>
+                        </div>
+                        <div class="Home-file-extra-details">
+                            <i class="fa fa-times-circle HomefilecircleOne"></i>
+                            <div class="popup">
+                                <p id="moveFileclick" style="cursor: pointer;">Move</p>
+                                <p>
+                                    <a href="/folder/downloadFile/<%= file.name %>">
+                                        Download
+                                    </a>
+                                </p>
+                                <p><a href="/folder/deleteFile/<%= file._id %>">Delete</a></p>
+                            </div>
+                        </div>
+            
+                        <div id="move_file" class="homecloseFileAction">
+                            <i class="fa fa-times-circle homefilecircleTwo"></i>
+                            <div style="margin-top: 22px;">
+                                <p style="font-weight: 500;">select folder name to move</p>
+                                <hr>
+                            </div>
+                            <form action="/folder/moveFile/<%= file._id %>" method="POST">
+                                <p id="filewarning1" style="display: none;color: red;">Already in same folder</p>
+                                <!-- <input type="hidden" name="currentFolder" value="folderids"> -->
+                                <select name="fileToMove" class="form-control fileSelection">
+                                    <option value="">select folder</option>
+                                    <% folders.forEach((val) => {%>
+                                    <option value="<%= val._id %>"><%= val.name %></option>
+                                    <% })%>
+                                </select>
+            
+                                <div style="margin-top: 10px;">
+                                    <input type="submit" value="move">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+          <%  }) %>
+        <% } %>
 
 
     </div>

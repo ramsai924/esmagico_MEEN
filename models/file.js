@@ -6,6 +6,9 @@ const fileSchema = new Schema({
         type : String,
         required : true
     },
+    homepath : {
+        type : String
+    },
     path : {
         type: Schema.Types.ObjectId,
         ref: "folder"
