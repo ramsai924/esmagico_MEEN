@@ -49,6 +49,7 @@ app.post("/uploadfile", upload, async (req,res) => {
                 homepath: req.body.filePath,
             })
             const fileUpload = await file.save()
+            console.log("none")
             return res.redirect("/")
         }else{
             const file = new File({
