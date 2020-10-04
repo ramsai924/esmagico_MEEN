@@ -12,4 +12,5 @@
 - .txt files are removed after every one hour.
 
 # To run application .
-- npm install > npm start
+- npm install
+- npm start
