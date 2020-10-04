@@ -9,3 +9,6 @@
 - When the user try to delete folder which have nested folders and files than all those files are removed recursively.
 - can search folders and files.
 - .txt files are removed after every one hour.
+
+# To run application .
+- npm install > npm start
