@@ -1,7 +1,7 @@
 # Technologies used.
-- HTML/CSS,Javascript and Embedded Javascript(EJS) as a Front end.
-- Node JS,Express JS as a Backend end.
-- MongoDB as a Database.
+- Front end : HTML/CSS,Javascript and Embedded Javascript(EJS).
+- Backend end : Node JS,Express JS.
+- Database : MongoDB.
 
 # Functionality.
 - User can create folders and upload files in any location.
