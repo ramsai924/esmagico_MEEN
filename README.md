@@ -5,9 +5,10 @@
 
 # Functionality.
 - User can create folders and upload files in any location.
-- can also move files and folders to any location they want.
+- move files and folders to any locations.
 - When the user try to delete folder which have nested folders and files than all those files are removed recursively.
-- can search folders and files.
+- search folders and files.
+- keeps track of nested folders structure. 
 - .txt files are removed after every one hour.
 
 # To run application .
